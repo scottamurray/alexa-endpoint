@@ -1,7 +1,7 @@
 ; For more on Alexa's response format, see http://amzn.to/2hZ4tpa.
 
 (ns alexa.response
-  (:require [clojure.string :as str]
+  (:require [camel-snake-kebab.core :refer :all]
             [clojure.data.json :as json]))
 
 (defn response
@@ -68,17 +68,9 @@
         (output-speech-removed)
         (with-directive delegate-directive))))
 
-(defn- keyword-to-camel-case
-  "Converts a keyword to a camel case string for use in JSON."
-  [keyword]
-  (let [keyword-str (name keyword)
-        find-regex #"-(\w)"
-        replace-fn #(str/upper-case (second %1))]
-    (str/replace keyword-str regex replace-fn)))
-
 (defn serialize
   "Serializes an Alexa response for transfer over HTTPS."
   [response]
   (let [wrapped-response {:version "1.0"
                           :response response}]
-    (json/write-str wrapped-response :key-fn keyword-to-camel-case)))
+    (json/write-str wrapped-response :key-fn ->camelCaseString)))
