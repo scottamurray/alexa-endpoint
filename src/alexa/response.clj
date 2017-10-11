@@ -56,7 +56,7 @@
   (let [directives (response :directives)]
     (assoc response :directives (conj directives directive))))
 
-(defn delegate
+(defn should-delegate
   "Marks a response as one that should delegate with the given updated intent.
   For more on delegating responses in multi-turn conversations,
   see http://amzn.to/2xvhCZg. Delegated responses cannot have output speech
@@ -67,6 +67,12 @@
     (-> response
         (output-speech-removed)
         (with-directive delegate-directive))))
+
+(defn with-card
+  "Returns a response with the given card added. Cards may only be included in
+  responses to a LaunchRequest or IntentRequest."
+  [response card]
+  (assoc response :card card))
 
 (defn serialize
   "Serializes an Alexa response for transfer over HTTPS."
