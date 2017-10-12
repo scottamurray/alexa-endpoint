@@ -42,31 +42,11 @@
   [response]
   (should-end-session response false))
 
-(defn- output-speech-removed
-  "Returns a response with output speech removed. Delegated responses cannot
-  have output speech or reprompt properties."
-  [response]
-  (-> response
-      (dissoc :output-speech)
-      (dissoc :reprompt)))
-
 (defn- with-directive
   "Returns a response with the given directive added."
   [response directive]
   (let [directives (response :directives)]
     (assoc response :directives (conj directives directive))))
-
-(defn should-delegate
-  "Marks a response as one that should delegate with the given updated intent.
-  For more on delegating responses in multi-turn conversations,
-  see http://amzn.to/2xvhCZg. Delegated responses cannot have output speech
-  or reprompt text properties, so this function removes them."
-  [response updated-intent]
-  (let [delegate-directive {:type "Dialog.Delegate"
-                            :updated-intent updated-intent}]
-    (-> response
-        (output-speech-removed)
-        (with-directive delegate-directive))))
 
 (defn with-card
   "Returns a response with the given card added. Cards may only be included in
