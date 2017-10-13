@@ -19,9 +19,8 @@
 (defn with-image
   "Returns a Standard response card with the given images."
   [standard-card small-image-url large-image-url]
-  (-> standard-card
-      (assoc-in [:image :small-image-url] small-image-url)
-      (assoc-in [:image :large-image-url] large-image-url)))
+  (assoc standard-card :image {:small-image-url small-image-url
+                               :large-image-url large-image-url}))
 
 (defn link-account
   "Returns a new LinkAccount response card."
