@@ -7,25 +7,21 @@
 (defn response
   "Returns an empty Alexa response."
   []
-  {:output-speech {:type nil
-                   :text nil}
-   :reprompt {:output-speech {:type nil
-                              :text nil}}
+  {:output-speech {:type "PlainText"
+                   :text ""}
+   :reprompt {:output-speech {:type "Plaintext"
+                              :text ""}}
    :should-end-session true})
 
 (defn output-speech
   "Sets a response's output speech text."
   [response speech-text]
-  (-> response
-      (assoc-in [:output-speech :type] "PlainText")
-      (assoc-in [:output-speech :text] speech-text)))
+  (assoc-in response [:output-speech :text] speech-text}))
 
 (defn reprompt-speech
   "Sets a response's reprompt speech text."
   [response speech-text]
-  (-> response
-      (assoc-in [:reprompt :output-speech :type] "PlainText")
-      (assoc-in [:reprompt :output-speech :text] speech-text)))
+  (assoc-in response [:reprompt :output-speech :text] speech-text}))
 
 (defn- should-end-session
   "Marks whether a response should end the session."
@@ -42,7 +38,7 @@
   [response]
   (should-end-session response false))
 
-(defn- with-directive
+(defn with-directive
   "Returns a response with the given directive added."
   [response directive]
   (let [directives (response :directives)]
