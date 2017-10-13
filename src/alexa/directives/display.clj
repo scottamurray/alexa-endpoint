@@ -37,9 +37,20 @@
       (assoc-in [:template :type] "BodyTemplate6")
       (assoc-in [:template :image :sources] [])))
 
-(defn using-vertical-list-template [] {})
+(defn using-vertical-list-template
+  "Applies the vertical list template to the given RenderTemplate directive."
+  [directive]
+  (-> directive
+      (assoc-in [:template :type] "ListTemplate1")
+      (assoc-in [:template :list-items] [])))
 
-(defn using-horizontal-list-with-image-template [] {})
+(defn using-horizontal-list-with-images-template
+  "Applies the horizontal list with thumbnail images template to the given
+  RenderTemplate directive."
+  [directive]
+  (-> directive
+      (assoc-in [:template :type] "ListTemplate2")
+      (assoc-in [:template :list-items] [])))
 
 (defn- with-text-content
   "Applies text content to a given RenderTemplate directive."
@@ -64,21 +75,38 @@
 
 (defn with-background-image
   "Applies a background image to a given RenderTemplate directive."
-  [directive image-url width height]
-  (assoc-in directive [:template :background-image] {:url image-url
-                                                     :width-pixels width
-                                                     :height-pixels height}))
+  [directive image]
+  (assoc-in directive [:template :background-image] image))
+
+(defn image-to-render
+  "Returns a renderable image that can be applied to a template."
+  [image-url width height]
+  {:url image-url
+   :width-pixels width
+   :height-pixels height})
 
 (defn with-single-image
   "Applies an image to the given RenderTemplate directives. Single images can
   only be applied to directives using BodyTemplate2 or BodyTemplate3."
-  [directive image-url width height]
-  (let [sources (get-in directive [:template :image :sources])
-        image {:url image-url
-               :width-pixels width
-               :height-pixels height}]
+  [directive image]
+  (let [sources (get-in directive [:template :image :sources])]
     (assoc-in directive [:template :image :sources]
       (conj sources image))))
+
+(defn list-item
+  "Returns a list item that can be added to a RenderTemplate directive using
+  ListTemplate1 or ListTemplate2."
+  [token text-content image]
+  {:token token
+   :text-content text-content
+   :image image})
+
+(defn with-list-item
+  "Adds a list item to the given RenderTemplate directive."
+  [directive list-item]
+  (let [list-items (get-in directive [:template :list-items])]
+    (assoc-in directive [:template :list-items]
+      (conj list-items list-item))))
 
 (defn hidden-back-button
   "Returns a RenderTemplate directive with the back button hidden."
