@@ -26,6 +26,7 @@
   "Returns a directive telling Alexa to confirm all the information the user
   has provided for the intent before the skill takes action. For more,
   see http://amzn.to/2yeIgJR."
+  []
   {:type "Dialog.ConfirmIntent"})
 
 (defn with-updated-intent
